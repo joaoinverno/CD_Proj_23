@@ -1,10 +1,6 @@
-from numpy import ndarray
-from pandas import Series, read_csv, DataFrame, concat
-from matplotlib.pyplot import savefig, show, figure, tight_layout, subplots 
-from dslabs_functions import get_variable_types, plot_bar_chart, HEIGHT
-from matplotlib.figure import Figure 
+from pandas import read_csv, DataFrame, concat
+from dslabs_functions import get_variable_types
 from sklearn.impute import SimpleImputer
-import csv  
 
 us_areas_regions = {
 'Alabama': 'South', 'Alaska': 'West',
@@ -46,9 +42,7 @@ us_areas_regions = {
 }
 
 def replace_states(data: DataFrame, var: str) -> DataFrame:
-    unique_values: list[str] = data[var].unique()
     data[var] = data[var].replace(us_areas_regions)
-    unique_values: list[str] = data[var].unique()
     data[var] = data[var].replace({'Midwest': 0, 'Northeast': 1, 'South': 2, 'West': 3})
     return data
 
@@ -132,24 +126,4 @@ data = replace_binary(data)
 
 data = fill(data)
 
-
-
 data.to_csv("newdata.csv")
-"""
-def remove_lines_with_missing_variables(input_file, output_file):
-    with open(input_file, 'r', newline='') as infile, open(output_file, 'w', newline='') as outfile:
-        reader = csv.reader(infile)
-        writer = csv.writer(outfile)
-
-        for row in reader:
-            missing_vars_count = sum(cell == '' or (isinstance(cell, str) and cell.strip() == '') for cell in row)
-            row.append(missing_vars_count)
-            writer.writerow(row)
-
-input_csv_file = 'class_pos_covid.csv/class_pos_covid.csv'
-output_csv_file = 'variables_missing.csv'
-remove_lines_with_missing_variables(input_csv_file, output_csv_file)
-
-'State', 'GeneralHealth', 'LastCheckupTime', 'RemovedTeeth', 'HadDiabetes', 'SmokerStatus', 'ECigaretteUsage', 'RaceEthnicityCategory', 'AgeCategory', 'TetanusLast10Tdap'
-"""
-
